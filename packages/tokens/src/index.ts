@@ -1,8 +1,59 @@
 /**
  * Arkae Design Tokens
- * Design tokens for the Arkae design system
+ * Export all design tokens for use across the design system
  */
 
-export const version = '0.1.0';
+export * from './colors';
+export * from './typography';
+export * from './spacing';
+export * from './shadows';
+export * from './borders';
+export * from './animations';
+export * from './breakpoints';
+export * from './zIndex';
 
-// Tokens will be implemented in the next phase
+// Re-export as a single tokens object for convenience
+import { colors, semanticColorsLight, semanticColorsDark } from './colors';
+import {
+  fontFamilies,
+  fontSizes,
+  fontWeights,
+  lineHeights,
+  letterSpacing,
+  typography,
+} from './typography';
+import { spacing, sizes } from './spacing';
+import { shadows } from './shadows';
+import { borderRadius, borderWidth } from './borders';
+import { duration, easing } from './animations';
+import { breakpoints } from './breakpoints';
+import { zIndex } from './zIndex';
+
+export const tokens = {
+  colors,
+  semanticColors: {
+    light: semanticColorsLight,
+    dark: semanticColorsDark,
+  },
+  typography: {
+    fontFamilies,
+    fontSizes,
+    fontWeights,
+    lineHeights,
+    letterSpacing,
+    variants: typography,
+  },
+  spacing,
+  sizes,
+  shadows,
+  borders: {
+    radius: borderRadius,
+    width: borderWidth,
+  },
+  animations: {
+    duration,
+    easing,
+  },
+  breakpoints,
+  zIndex,
+} as const;
