@@ -1,0 +1,33 @@
+{
+  "name": "@arkae/tokens",
+  "version": "0.1.0",
+  "description": "Design tokens for the Arkae design system",
+  "main": "./dist/index.js",
+  "module": "./dist/index.mjs",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.mjs",
+      "require": "./dist/index.js"
+    },
+    "./tailwind": {
+      "import": "./tailwind.config.ts",
+      "require": "./tailwind.config.ts"
+    },
+    "./styles.css": "./src/styles.css"
+  },
+  "files": ["dist", "tailwind.config.ts", "src/styles.css"],
+  "scripts": {
+    "build": "tsup",
+    "dev": "tsup --watch",
+    "type-check": "tsc --noEmit",
+    "clean": "rm -rf dist"
+  },
+  "devDependencies": {
+    "tsup": "^8.0.2",
+    "typescript": "^5.4.5"
+  },
+  "keywords": ["design-tokens", "arkae", "tailwind"],
+  "license": "MIT"
+}

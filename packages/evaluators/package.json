@@ -1,0 +1,34 @@
+{
+  "name": "@arkae/evaluators",
+  "version": "0.1.0",
+  "description": "LLM evaluation framework for Arkae",
+  "main": "./dist/index.js",
+  "module": "./dist/index.mjs",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.mjs",
+      "require": "./dist/index.js"
+    }
+  },
+  "files": ["dist"],
+  "scripts": {
+    "build": "tsup",
+    "dev": "tsup --watch",
+    "type-check": "tsc --noEmit",
+    "test": "vitest",
+    "clean": "rm -rf dist"
+  },
+  "dependencies": {
+    "@arkae/ai-tools": "workspace:*",
+    "@arkae/metrics": "workspace:*"
+  },
+  "devDependencies": {
+    "tsup": "^8.0.2",
+    "typescript": "^5.4.5",
+    "vitest": "^1.4.0"
+  },
+  "keywords": ["evaluation", "llm", "arkae"],
+  "license": "MIT"
+}
