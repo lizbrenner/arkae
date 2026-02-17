@@ -1,5 +1,11 @@
 # @arkae/library
 
+## 1.0.1
+
+### Patch Changes
+
+- ef315ff: docs: add comprehensive publishing workflow guide
+
 ## 1.0.0
 
 ### Major Changes
