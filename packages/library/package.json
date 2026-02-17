@@ -1,0 +1,68 @@
+{
+  "name": "@arkae/library",
+  "version": "0.1.0",
+  "description": "Complete Arkae design system - includes all components, tokens, and utilities",
+  "main": "./dist/index.js",
+  "module": "./dist/index.mjs",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.mjs",
+      "require": "./dist/index.js"
+    },
+    "./tokens": {
+      "types": "./dist/tokens.d.ts",
+      "import": "./dist/tokens.mjs",
+      "require": "./dist/tokens.js"
+    },
+    "./primitives": {
+      "types": "./dist/primitives.d.ts",
+      "import": "./dist/primitives.mjs",
+      "require": "./dist/primitives.js"
+    },
+    "./compositions": {
+      "types": "./dist/compositions.d.ts",
+      "import": "./dist/compositions.mjs",
+      "require": "./dist/compositions.js"
+    }
+  },
+  "files": ["dist", "README.md"],
+  "scripts": {
+    "build": "tsup",
+    "dev": "tsup --watch",
+    "type-check": "tsc --noEmit",
+    "clean": "rm -rf dist"
+  },
+  "dependencies": {
+    "@arkae/primitives": "workspace:*",
+    "@arkae/tokens": "workspace:*",
+    "@arkae/compositions": "workspace:*"
+  },
+  "devDependencies": {
+    "@types/react": "^18.3.1",
+    "tsup": "^8.0.2",
+    "typescript": "^5.4.5"
+  },
+  "peerDependencies": {
+    "react": ">=18.0.0",
+    "react-dom": ">=18.0.0"
+  },
+  "keywords": [
+    "design-system",
+    "react",
+    "typescript",
+    "base-ui",
+    "ai-native",
+    "components",
+    "ui-library",
+    "arkae"
+  ],
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/lizbrenner/arkae.git",
+    "directory": "packages/library"
+  },
+  "homepage": "https://github.com/lizbrenner/arkae#readme"
+}

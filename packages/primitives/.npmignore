@@ -1,0 +1,14 @@
+# Build artifacts
+dist
+*.tsbuildinfo
+
+# Tests
+*.test.ts
+*.test.tsx
+
+# Development
+.turbo
+tsup.config.ts
+tsconfig.json
+vitest.config.ts
+vitest.setup.ts

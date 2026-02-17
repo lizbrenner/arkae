@@ -1,0 +1,43 @@
+# Build artifacts
+dist
+build
+*.tsbuildinfo
+
+# Tests
+coverage
+*.log
+
+# Development
+.turbo
+tsconfig.tsbuildinfo
+
+# Source maps (optional - include if you want them in npm)
+# *.map
+
+# Config files not needed in published package
+tsup.config.ts
+vitest.config.ts
+.eslintrc*
+.prettierrc*
+
+# Documentation source (README.md is included by default)
+docs/
+
+# Test files
+**/*.test.ts
+**/*.test.tsx
+**/*.spec.ts
+**/*.spec.tsx
+__tests__/
+__mocks__/
+
+# IDE
+.vscode
+.idea
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db

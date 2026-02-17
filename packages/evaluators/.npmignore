@@ -1,0 +1,8 @@
+# Build artifacts
+dist
+*.tsbuildinfo
+
+# Development
+.turbo
+tsup.config.ts
+tsconfig.json
