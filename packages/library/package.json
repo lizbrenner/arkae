@@ -1,6 +1,6 @@
 {
   "name": "@arkae/library",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Complete Arkae design system - includes all components, tokens, and utilities",
   "main": "./dist/index.js",
   "module": "./dist/index.mjs",
