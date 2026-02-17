@@ -1,6 +1,6 @@
 {
   "name": "@arkae/metrics",
-  "version": "0.1.0",
+  "version": "0.1.2",
   "description": "Usage tracking for Arkae design system",
   "main": "./dist/index.js",
   "module": "./dist/index.mjs",
@@ -12,7 +12,9 @@
       "require": "./dist/index.js"
     }
   },
-  "files": ["dist"],
+  "files": [
+    "dist"
+  ],
   "scripts": {
     "build": "tsup",
     "dev": "tsup --watch",
@@ -33,6 +35,10 @@
   "peerDependencies": {
     "react": ">=18.0.0"
   },
-  "keywords": ["metrics", "analytics", "arkae"],
+  "keywords": [
+    "metrics",
+    "analytics",
+    "arkae"
+  ],
   "license": "MIT"
 }
