@@ -7,6 +7,21 @@ echo "=============================="
 echo ""
 
 cat << 'EOF'
+⚠️  IMPORTANT: npm Token Changes (December 2025)
+-----------------------------------------------
+npm classic tokens have been revoked. New authentication:
+
+For local development:
+  $ npm login
+  → Creates 2-hour session tokens (auto-expires)
+
+For CI/CD (GitHub Actions):
+  $ npm token create --read-write --cidr=0.0.0.0/0
+  → Creates granular access token
+  → MUST enable "Bypass 2FA" for automation
+  → Expires in 90 days (need to regenerate)
+  → Add as NPM_TOKEN secret in GitHub
+
 OPTION 1: Automatic Publishing (Recommended)
 --------------------------------------------
 This uses GitHub Actions to publish automatically.
@@ -35,6 +50,7 @@ For testing or manual control:
 
 1. Login to npm:
    $ npm login
+   (Note: Session expires in 2 hours)
 
 2. Update versions:
    $ pnpm changeset
@@ -52,8 +68,19 @@ Before publishing for the first time:
 
 ✓ Create npm account at https://www.npmjs.com
 ✓ Create @arkae organization (free, unlimited public packages)
-✓ Generate npm token (Settings → Access Tokens → Generate)
-✓ Add NPM_TOKEN to GitHub Secrets (for automatic publishing)
+✓ Generate granular token:
+  - CLI: npm token create --read-write --cidr=0.0.0.0/0
+  - Web: https://www.npmjs.com/settings/tokens
+  - Enable "Bypass 2FA" for CI/CD
+  - Set 90-day expiration (maximum for write tokens)
+✓ Add NPM_TOKEN to GitHub Secrets
+
+Token Maintenance:
+-----------------
+⚠️  Tokens expire after 90 days. You'll need to:
+  1. Generate new token: npm token create --read-write
+  2. Update GitHub secret NPM_TOKEN
+  3. Mark calendar for next renewal
 
 Package Structure:
 -----------------
@@ -74,4 +101,5 @@ Need Help?
 ---------
 Run: ./scripts/verify-publish-setup.sh
 Docs: See PUBLISHING_SETUP.md
+npm Guide: https://github.blog/changelog/2025-12-09-npm-classic-tokens-revoked-session-based-auth-and-cli-token-management-now-available/
 EOF

@@ -122,6 +122,14 @@ import { colors } from '@arkae/library/tokens';
 
 ## Publishing Workflow
 
+### Important: npm Token Changes (Dec 2025)
+
+npm has deprecated classic tokens. You now need:
+- **For local development:** Use `npm login` (creates 2-hour session tokens)
+- **For CI/CD:** Use granular access tokens with "Bypass 2FA" enabled
+- **Token expiration:** Write tokens expire after 90 days maximum
+- **Recommended:** Consider OIDC trusted publishing for token-free deployment
+
 ### Before First Publish
 
 1. **Create npm organization** (if not exists):
@@ -130,7 +138,13 @@ import { colors } from '@arkae/library/tokens';
    - Set to public access (free)
 
 2. **Add NPM_TOKEN to GitHub**:
-   - Generate token: https://www.npmjs.com/settings/tokens
+   - Generate granular token with publish permissions:
+     ```bash
+     npm token create --read-write --cidr=0.0.0.0/0
+     ```
+   - Or via website: https://www.npmjs.com/settings/tokens
+   - **Important:** Enable "Bypass 2FA" for CI/CD automation
+   - Token expires in max 90 days (you'll need to regenerate)
    - Add to GitHub repo secrets as `NPM_TOKEN`
 
 ### Regular Publishing Process
