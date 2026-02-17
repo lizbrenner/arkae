@@ -1,0 +1,80 @@
+import { Meta } from '@storybook/blocks';
+
+<Meta title="Introduction" />
+
+# Arkae Design System
+
+Welcome to the Arkae Design System documentation! This Storybook showcases all components, tokens, and patterns that make up the Arkae design language.
+
+## What is Arkae?
+
+Arkae is an AI-native design system built on [Base UI](https://base-ui.com/) primitives. It provides a comprehensive set of accessible, customizable components and design tokens for building modern web applications.
+
+## Features
+
+- **🎨 Design Tokens** - Comprehensive system of colors, typography, spacing, and more
+- **♿️ Accessible** - Built on Base UI with WCAG compliance in mind
+- **🎭 Themeable** - Built-in light and dark mode support
+- **📦 Modular** - Use individual packages or the complete library
+- **⚡️ Modern** - Built with React, TypeScript, and Tailwind CSS
+- **🤖 AI-Native** - Designed for AI-assisted development workflows
+
+## Getting Started
+
+### Installation
+
+Install the complete design system:
+
+```bash
+npm install @arkae/library
+```
+
+Or install individual packages:
+
+```bash
+npm install @arkae/primitives @arkae/tokens
+```
+
+### Usage
+
+```tsx
+import { Button } from '@arkae/library';
+import '@arkae/library/styles.css';
+
+function App() {
+  return (
+    <Button variant="primary" size="md">
+      Click me
+    </Button>
+  );
+}
+```
+
+## Package Structure
+
+- **@arkae/tokens** - Design tokens (colors, typography, spacing, etc.)
+- **@arkae/primitives** - Base UI components (Button, Input, Dialog, etc.)
+- **@arkae/compositions** - Complex composed components
+- **@arkae/library** - Complete design system (umbrella package)
+
+## Explore
+
+Use the sidebar to explore:
+
+- **Tokens** - Color palettes, typography, spacing, shadows, and more
+- **Primitives** - Core UI components
+- **Compositions** - Complex component patterns
+
+## Resources
+
+- [GitHub Repository](https://github.com/lizbrenner/arkae)
+- [npm Package](https://www.npmjs.com/package/@arkae/library)
+- [Base UI Documentation](https://base-ui.com/)
+
+## Contributing
+
+This is a portfolio project showcasing modern design system development practices. Feel free to explore the code and use patterns in your own projects!
+
+---
+
+Built with ❤️ using React, TypeScript, and Base UI

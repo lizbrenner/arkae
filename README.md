@@ -4,6 +4,9 @@
 
 An AI-native design system built on Base UI primitives for web products and platforms.
 
+[![Storybook](https://img.shields.io/badge/Storybook-View%20Components-ff4785?style=for-the-badge&logo=storybook&logoColor=white)](https://lizbrenner.github.io/arkae/)
+[![npm](https://img.shields.io/npm/v/@arkae/library?style=for-the-badge&logo=npm)](https://www.npmjs.com/package/@arkae/library)
+
 ## Installation
 
 ### Quick Start - Install Everything
@@ -90,12 +93,15 @@ Arkae is a comprehensive design system that combines:
 - `@arkae/tokens` - Design tokens and Tailwind preset
 - `@arkae/primitives` - 8 Base UI wrapped components
 - `@arkae/library` - Umbrella package for easy installation
+- `@arkae/storybook` - Interactive component documentation
 
 🚧 **In Progress:**
 - Compositions package
 - AI tools integration
-- Documentation site
-- Storybook setup
+
+## Documentation
+
+**[📚 View Storybook](https://lizbrenner.github.io/arkae/)** - Interactive component documentation and design tokens showcase
 
 ## Development
 
