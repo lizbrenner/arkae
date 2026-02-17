@@ -12,6 +12,12 @@
 
 ---
 
+## Important: OIDC is Per-Package, Not Organization-Wide
+
+Unlike what the old docs suggested, OIDC settings are configured **for each individual package**, not at the organization level. You'll need to configure it after your first publish.
+
+---
+
 ## Setup Steps
 
 ### Prerequisites
@@ -19,221 +25,268 @@
 - ✅ `@arkae` organization created on npm
 - ✅ Maintainer access to the organization
 
-### Step 1: Configure OIDC on npm (One-time setup)
+### Step 1: Create npm Organization
 
-1. **Go to npm organization settings:**
-   https://www.npmjs.com/settings/arkae/oidc
+1. Go to https://www.npmjs.com
+2. Click profile → "Add Organization"
+3. Name: `arkae`
+4. Type: "Unlimited public packages" (Free)
 
-2. **Add GitHub as trusted publisher:**
-   - Click "Add Publishing Provider"
-   - Select: **GitHub Actions**
-   
-3. **Configure the connection:**
+### Step 2: First Publish (Claims Package Names)
+
+**You must publish packages at least once before configuring OIDC.**
+
+Choose one approach:
+
+#### Option A: Manual First Publish (Recommended for simplicity)
+
+```bash
+# Login to npm (2-hour session)
+npm login
+
+# Build and publish
+pnpm build
+pnpm release
+```
+
+This publishes all packages under `@arkae/*` and claims the names.
+
+#### Option B: Token-Based First Publish via GitHub Actions
+
+1. Create temporary granular token:
+   ```bash
+   npm token create --read-write --cidr=0.0.0.0/0
    ```
-   Repository: lizbrenner/arkae
-   Workflow: release.yml
-   Environment: (leave blank for any environment)
+2. Enable "Bypass 2FA"
+3. Add as `NPM_TOKEN` in GitHub Secrets
+4. Push changeset to trigger workflow
+5. Let GitHub Actions publish
+
+### Step 3: Configure OIDC for Each Package
+
+**After packages are published**, configure OIDC:
+
+1. **Navigate to package settings:**
+   ```
+   https://www.npmjs.com/package/@arkae/library/settings
+   https://www.npmjs.com/package/@arkae/primitives/settings
+   https://www.npmjs.com/package/@arkae/tokens/settings
+   https://www.npmjs.com/package/@arkae/compositions/settings
    ```
 
-4. **Set permissions:**
-   - Select: All packages in organization
-   - Or specify individual packages: `@arkae/library`, `@arkae/primitives`, etc.
+2. **In the "Publishing access" section:**
+   - Look for "Trusted Publisher" or "Publishing Provider"
+   - Click "Set up trusted publisher"
 
-5. **Save configuration**
+3. **Select "GitHub Actions"**
 
-### Step 2: Update Package Settings (per package)
+4. **Fill in the form:**
+   ```
+   Workflow filename: release.yml
+   Repository owner: lizbrenner
+   Repository name: arkae
+   Environment: (leave blank or use "production")
+   ```
 
-For each package you want to publish via OIDC:
+5. **Save** for each package
 
-1. Go to: https://www.npmjs.com/package/@arkae/library/access
-2. Enable: **"Require publish from CI/CD"**
-3. This ensures packages can only be published via OIDC (prevents manual token publishing)
+### Step 4: Remove NPM_TOKEN (After OIDC is Working)
 
-### Step 3: Remove NPM_TOKEN from GitHub (Optional after OIDC works)
-
-Once OIDC is working:
+Once OIDC is configured and tested:
 1. Go to: https://github.com/lizbrenner/arkae/settings/secrets/actions
 2. Delete `NPM_TOKEN` secret (no longer needed!)
 
-### Step 4: Test Publishing
+---
 
-Your GitHub Actions workflow is already configured for OIDC (`id-token: write` permission).
+## How to Find Package Settings Page
 
-**To test:**
+Since direct links might not work, here's how to navigate:
 
-```bash
-# Create a changeset
-pnpm changeset
+### Method 1: Via Package Page
+1. Go to https://www.npmjs.com
+2. Search for your package (e.g., `@arkae/library`)
+3. Click on the package
+4. Click the **"Settings"** tab at the top
+5. Scroll to "Publishing access" or "Trusted Publisher" section
 
-# Commit and push
-git add .
-git commit -m "test: OIDC publishing"
-git push
+### Method 2: Via Your Profile
+1. Go to https://www.npmjs.com/~[your-username]
+2. Click "Packages"
+3. Find and click on `@arkae/library`
+4. Click "Settings" tab
+5. Look for "Trusted Publisher" section
+
+### Method 3: Direct URL Pattern
+```
+https://www.npmjs.com/package/@arkae/PACKAGE-NAME/settings
 ```
 
-GitHub Actions will:
-1. Request a short-lived token from npm via OIDC
-2. Authenticate automatically
-3. Publish packages with provenance attestation
+Replace `PACKAGE-NAME` with:
+- `library`
+- `primitives`
+- `tokens`
+- `compositions`
 
 ---
 
-## How It Works
+## Complete Workflow
 
-```mermaid
-sequenceDiagram
-    participant GHA as GitHub Actions
-    participant GH as GitHub OIDC
-    participant NPM as npm Registry
-    
-    GHA->>GH: Request OIDC token
-    GH->>GHA: Issue short-lived token (with repo/workflow info)
-    GHA->>NPM: Publish with OIDC token
-    NPM->>NPM: Verify token signature
-    NPM->>NPM: Check trusted publisher config
-    NPM->>GHA: Publish successful + provenance
+### First Time Publishing
+
+```bash
+# Step 1: Create organization on npm.com
+# (via website)
+
+# Step 2: Create changeset
+pnpm changeset
+# Select: @arkae/library, @arkae/primitives, @arkae/tokens
+# Bump: minor
+# Summary: Initial release with OIDC
+
+# Step 3: Manual first publish
+npm login
+pnpm build
+pnpm release
+
+# Step 4: Configure OIDC for each published package
+# Go to each package settings page on npm.com
+# Set up GitHub Actions as trusted publisher
+
+# Step 5: Future publishes use OIDC automatically!
+pnpm changeset
+git add . && git commit -m "chore: version bump"
+git push
+# GitHub Actions publishes via OIDC ✅
 ```
 
-**Key Points:**
-- Token is issued per workflow run
-- Expires after the workflow completes
-- Contains claims about the repository and workflow
-- npm verifies the token signature and trusted configuration
+---
+
+## How OIDC Works
+
+```
+GitHub Actions Workflow Run
+         ↓
+Requests OIDC token from GitHub
+         ↓
+GitHub issues short-lived token with claims:
+  - Repository: lizbrenner/arkae
+  - Workflow: release.yml
+  - Commit SHA
+         ↓
+GitHub Actions uses token to publish to npm
+         ↓
+npm verifies token signature
+         ↓
+npm checks "Trusted Publisher" config
+         ↓
+Match found → Publish succeeds with provenance! ✅
+```
+
+**Token lifetime:** Only exists during the workflow run (minutes)
 
 ---
 
 ## Verification
 
-After your first OIDC publish, verify it worked:
+After your first OIDC publish:
 
 ### Check Provenance
 
-Visit your package page:
-```
-https://www.npmjs.com/package/@arkae/library
-```
+Visit: `https://www.npmjs.com/package/@arkae/library`
 
 Look for:
-- ✅ **Provenance badge** - Shows the package was published via OIDC
-- 🔍 **Build details** - Links to exact GitHub Actions run
-- 🔐 **Cryptographic attestation** - Proof of origin
+- ✅ **Provenance badge** - Shows OIDC publishing
+- 🔍 **Build details** - Links to GitHub Actions run
+- 🔐 **Attestation** - Cryptographic proof of origin
 
-### View Publishing History
+### Verify Settings
 
 ```bash
 npm view @arkae/library
 ```
 
-Should show:
-- Published via GitHub Actions
-- OIDC provenance attestation
-- Links to source repository
+Should show OIDC provenance in the output.
 
 ---
 
 ## Troubleshooting
 
-### "403 Forbidden" or "OIDC not configured"
+### Can't Find "Trusted Publisher" Section
 
-**Cause:** npm OIDC settings not configured
+**Cause:** Package doesn't exist yet (needs first publish)
 
-**Fix:**
-1. Go to https://www.npmjs.com/settings/arkae/oidc
-2. Ensure GitHub Actions is added as trusted publisher
-3. Verify repository name is correct: `lizbrenner/arkae`
-4. Check workflow name matches: `release.yml`
+**Fix:** Publish the package once (manually or with token), then configure OIDC
 
-### "id-token permission not granted"
+### "403 Forbidden" Error
 
-**Cause:** Workflow missing OIDC permission
+**Cause:** OIDC not configured for the package
 
 **Fix:**
-Already configured in `.github/workflows/release.yml`:
+1. Go to package settings page
+2. Set up trusted publisher with GitHub Actions
+3. Ensure workflow filename matches: `release.yml`
+
+### "id-token permission denied"
+
+**Cause:** GitHub Actions needs permission
+
+**Fix:** Already configured in `.github/workflows/release.yml`:
 ```yaml
 permissions:
-  id-token: write  # ✅ Required for OIDC
+  id-token: write  # ✅ Required
 ```
 
-### Workflow still using NPM_TOKEN
+### Package Page Shows 404
 
-**During transition:** The workflow can use NPM_TOKEN as fallback while you set up OIDC.
+**Cause:** Package name not yet claimed/published
 
-**After OIDC is working:** Remove these lines from workflow:
-```yaml
-NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}  # Remove this
-```
-
-And delete the GitHub secret.
+**Fix:** Do first publish to claim the name
 
 ---
 
-## Migration Path
+## Comparison: Token vs OIDC
 
-### Phase 1: Setup (you are here)
-1. Configure OIDC on npm organization
-2. Test publish with OIDC
-3. Verify provenance appears
-
-### Phase 2: Transition
-1. Keep NPM_TOKEN as backup
-2. Monitor first few OIDC publishes
-3. Ensure everything works
-
-### Phase 3: Complete
-1. Remove NPM_TOKEN from GitHub secrets
-2. Revoke any npm tokens
-3. Fully OIDC-based publishing ✅
+| Aspect | Granular Token | OIDC |
+|--------|----------------|------|
+| **Setup** | Create token, add to GitHub | Configure per package after first publish |
+| **Secrets** | Store NPM_TOKEN in GitHub | None needed |
+| **Expiration** | 90 days | Per-run (minutes) |
+| **Rotation** | Manual every 90 days | Automatic |
+| **2FA bypass** | Required | Not needed |
+| **Security** | Medium | High |
+| **Maintenance** | Ongoing | None |
+| **First publish** | Can use for first publish | Need token/manual for first publish |
 
 ---
 
-## Package-specific OIDC Settings
+## Recommended Workflow
 
-You can configure OIDC per package or for the whole organization:
+**For you (starting fresh):**
 
-### Organization-wide (Recommended)
-- Applies to all `@arkae/*` packages
-- Configured at: https://www.npmjs.com/settings/arkae/oidc
+1. ✅ Create `@arkae` organization
+2. ✅ Do first publish manually: `npm login` → `pnpm release`
+3. ✅ Configure OIDC for each package on npm.com
+4. ✅ All future publishes use OIDC (no tokens!)
 
-### Per-package
-- Individual package settings
-- Useful if you want different workflows for different packages
-- Configured at: https://www.npmjs.com/package/@arkae/library/access
-
----
-
-## Security Benefits
-
-### With Traditional Tokens
-- ❌ Token stored in GitHub Secrets (attack surface)
-- ❌ Manual rotation every 90 days
-- ❌ Can leak if secrets are exposed
-- ❌ Requires 2FA bypass for automation
-
-### With OIDC
-- ✅ No stored secrets
-- ✅ No rotation needed
-- ✅ Token exists only during workflow run
-- ✅ Cryptographic proof of origin (provenance)
-- ✅ Can't publish manually (prevents social engineering)
-- ✅ Audit trail shows exact GitHub commit/workflow
+**Simple, secure, and maintenance-free!**
 
 ---
 
 ## Additional Resources
 
-- [npm OIDC Documentation](https://docs.npmjs.com/generating-provenance-statements)
-- [GitHub OIDC Documentation](https://docs.github.com/en/actions/deployment/security-hardening-your-deployments/about-security-hardening-with-openid-connect)
-- [npm Provenance](https://github.blog/2023-04-19-introducing-npm-package-provenance/)
+- [npm Trusted Publishing Docs](https://docs.npmjs.com/trusted-publishers)
+- [GitHub OIDC Guide](https://docs.github.com/en/actions/deployment/security-hardening-your-deployments/about-security-hardening-with-openid-connect)
+- [npm Provenance Blog](https://github.blog/2023-04-19-introducing-npm-package-provenance/)
 
 ---
 
 ## Next Steps
 
-1. ✅ Go to https://www.npmjs.com/settings/arkae/oidc
-2. ✅ Add GitHub Actions as trusted publisher
-3. ✅ Configure for repository: `lizbrenner/arkae`
-4. ✅ Test with: `pnpm changeset` → commit → push
-5. ✅ Verify provenance on published packages
-6. ✅ (Optional) Remove NPM_TOKEN secret after successful test
+1. ✅ Create `@arkae` organization on npm
+2. ✅ Run `npm login` on your machine
+3. ✅ Create changeset: `pnpm changeset`
+4. ✅ Manual first publish: `pnpm build && pnpm release`
+5. ✅ Configure OIDC in each package's settings page
+6. ✅ Future publishes happen automatically via OIDC! 🚀
 
-**Your GitHub Actions workflow is already OIDC-ready!** Just configure npm's side and you're done.
+**No tokens, no expiration, no maintenance!**
