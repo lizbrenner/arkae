@@ -5,52 +5,55 @@ import { cva, type VariantProps } from 'class-variance-authority';
 import { cn } from '../utils/cn';
 
 const buttonVariants = cva(
-  // Base styles
+  // Base styles - minimal Base UI approach
   [
     'inline-flex items-center justify-center gap-2',
-    'rounded-lg font-medium',
-    'transition-all duration-base ease-inOut',
-    'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2',
+    'rounded-md font-medium',
+    'transition-colors duration-150',
+    'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-blue-500',
     'disabled:cursor-not-allowed disabled:opacity-50',
   ],
   {
     variants: {
       variant: {
         primary: [
-          'bg-primary-600 text-white',
-          'hover:bg-primary-700',
-          'focus-visible:ring-primary-500',
-          'data-[disabled]:bg-primary-300',
+          'bg-blue-600 text-white',
+          'hover:bg-blue-700',
+          'active:bg-blue-800',
+          'data-[disabled]:bg-blue-300',
         ],
         secondary: [
-          'bg-secondary-600 text-white',
-          'hover:bg-secondary-700',
-          'focus-visible:ring-secondary-500',
-          'data-[disabled]:bg-secondary-300',
+          'bg-gray-200 text-gray-900',
+          'hover:bg-gray-300',
+          'active:bg-gray-400',
+          'data-[disabled]:bg-gray-100',
+          'dark:bg-gray-700 dark:text-gray-100',
+          'dark:hover:bg-gray-600',
         ],
         ghost: [
           'bg-transparent text-gray-700',
           'hover:bg-gray-100',
-          'focus-visible:ring-gray-300',
-          'dark:text-gray-300 dark:hover:bg-gray-800',
+          'active:bg-gray-200',
+          'dark:text-gray-300',
+          'dark:hover:bg-gray-800',
         ],
         link: [
-          'bg-transparent text-primary-600',
-          'hover:text-primary-700 hover:underline',
-          'focus-visible:ring-primary-500',
-          'data-[disabled]:text-primary-300',
+          'bg-transparent text-blue-600',
+          'hover:text-blue-700 hover:underline',
+          'active:text-blue-800',
+          'data-[disabled]:text-blue-300',
         ],
         danger: [
-          'bg-error-600 text-white',
-          'hover:bg-error-700',
-          'focus-visible:ring-error-500',
-          'data-[disabled]:bg-error-300',
+          'bg-red-600 text-white',
+          'hover:bg-red-700',
+          'active:bg-red-800',
+          'data-[disabled]:bg-red-300',
         ],
       },
       size: {
         sm: 'px-3 py-1.5 text-sm',
         md: 'px-4 py-2 text-base',
-        lg: 'px-6 py-3 text-lg',
+        lg: 'px-5 py-2.5 text-lg',
       },
       fullWidth: {
         true: 'w-full',

@@ -6,28 +6,32 @@ import { cn } from '../utils/cn';
 
 const inputVariants = cva(
   [
-    'w-full rounded-lg border',
-    'bg-semantic-background-primary text-semantic-text-primary',
-    'placeholder:text-semantic-text-tertiary',
-    'transition-colors duration-base',
+    'w-full rounded-md border',
+    'bg-white text-gray-900',
+    'placeholder:text-gray-400',
+    'transition-colors duration-150',
     'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-1',
-    'data-[disabled]:opacity-50 data-[disabled]:cursor-not-allowed data-[disabled]:bg-semantic-background-secondary',
+    'data-[disabled]:opacity-50 data-[disabled]:cursor-not-allowed data-[disabled]:bg-gray-50',
+    'dark:bg-gray-900 dark:text-gray-100',
+    'dark:placeholder:text-gray-500',
+    'dark:data-[disabled]:bg-gray-800',
   ],
   {
     variants: {
       size: {
         sm: 'px-3 py-1.5 text-sm',
-        md: 'px-4 py-2 text-base',
-        lg: 'px-4 py-3 text-lg',
+        md: 'px-3 py-2 text-base',
+        lg: 'px-4 py-2.5 text-lg',
       },
       hasError: {
         true: [
-          'border-error-500',
-          'focus-visible:border-error-500 focus-visible:ring-error-500',
+          'border-red-500',
+          'focus-visible:border-red-500 focus-visible:ring-red-500',
         ],
         false: [
-          'border-semantic-border-primary',
-          'focus-visible:border-semantic-border-focus focus-visible:ring-semantic-border-focus',
+          'border-gray-300',
+          'focus-visible:border-blue-500 focus-visible:ring-blue-500',
+          'dark:border-gray-600',
         ],
       },
     },
@@ -98,13 +102,13 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
     return (
       <div className={cn('relative', wrapperClassName)}>
         {leftIcon && (
-          <div className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-semantic-text-tertiary">
+          <div className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 dark:text-gray-500">
             {leftIcon}
           </div>
         )}
         {input}
         {rightIcon && (
-          <div className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 text-semantic-text-tertiary">
+          <div className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 dark:text-gray-500">
             {rightIcon}
           </div>
         )}
